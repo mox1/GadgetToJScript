@@ -102,4 +102,28 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+	<PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.1" />
+  </ItemGroup>  
+	<Target Name="ILRepack" AfterTargets="Build">
+
+        <PropertyGroup>
+            <WorkingDirectory>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)</WorkingDirectory>
+        </PropertyGroup>
+
+        <ItemGroup>
+			<InputAssemblies Include="$(AssemblyName).exe" />
+            <InputAssemblies Include="NDesk.Options.dll" />
+        </ItemGroup>
+		
+
+        <ILRepack 
+			MainAssembly="$(AssemblyName).exe"
+			OutputType="$(OutputType)" 
+			OutputAssembly="$(AssemblyName).exe"
+            InputAssemblies="@(InputAssemblies)" 
+            InternalizeExcludeAssemblies="@(InternalizeExcludeAssemblies)" 
+            WorkingDirectory="$(WorkingDirectory)" />
+
+    </Target>  
 </Project>
